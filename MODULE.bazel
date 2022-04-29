@@ -4,42 +4,8 @@ module(
     name = "aspect_rules_js",
     version = "0.0.0",
     compatibility_level = 1,
-    toolchains_to_register = ["@yq_toolchains//:all"],
 )
 
-bazel_dep(name = "aspect_bazel_lib", version = "0.9.8")
+bazel_dep(name = "aspect_bazel_lib", version = "0.11.0")
 bazel_dep(name = "bazel_skylib", version = "1.1.1")
-bazel_dep(name = "rules_nodejs", version = "5.4.1")
-
-ext = use_extension("@aspect_bazel_lib//lib:extensions.bzl", "ext")
-use_repo(ext, "yq_host")
-use_repo(ext, "yq_toolchains")
-use_repo(ext, "yq_linux_amd64")
-
-npm = use_extension("@aspect_rules_js//js:extensions.bzl", "npm", dev_dependency = True)
-npm.pnpm_lock(
-    name = "example_npm_deps",
-    patch_args = {
-        "@gregmagolan/test-a": ["-p1"],
-    },
-    patches = {
-        "@gregmagolan/test-a": ["//example:test-a.patch"],
-        "@gregmagolan/test-a@0.0.1": ["//example:test-a@0.0.1.patch"],
-    },
-    pnpm_lock = "//example:pnpm-lock.yaml",
-    postinstall = {
-        "@aspect-test/c": "echo 'moo' > cow.txt",
-        "@aspect-test/c@2.0.0": "echo 'mooo' >> cow.txt",
-    },
-)
-
-npm.package(
-    name = "example_npm_deps__acorn-8.4.0",
-    integrity = "sha512-ULr0LDaEqQrMFGyQ3bhJkLsbtrQ8QibAseGZeaSUiT/6zb9IvIkomWHJIvgvwad+hinRAgsI51JcWk2yvwyL+w==",
-    link_package_guard = "example",
-    package = "acorn",
-    version = "8.4.0",
-)
-
-use_repo(npm, "example_npm_deps")
-use_repo(npm, "example_npm_deps__acorn-8.4.0")
+bazel_dep(name = "rules_nodejs", version = "5.4.2")

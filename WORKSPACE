@@ -3,6 +3,12 @@ workspace(
     name = "aspect_rules_js",
 )
 
+# Avoid descending into the e2e workspaces
+local_repository(
+    name = "e2e_bzlmod",
+    path = "./e2e/bzlmod",
+)
+
 load("//js:dev_repositories.bzl", "rules_js_dev_dependencies")
 
 rules_js_dev_dependencies()
